@@ -120,7 +120,17 @@ class Category
         $criteria->where(Criteria::expr()->eq('approved', true))
                  ->orderBy(array("created" => Criteria::DESC));
 
-        return $this->suggestions->matching($criteria);
+        $q = $this->suggestions->matching($criteria);
+        $q = $q->createQuery();
+
+                $paginator  = $this->get('knp_paginator');
+                $pagination = $paginator->paginate(
+                   $q, /* query NOT result */
+                   $request->query->getInt('page', 1)/*page number*/,
+                   5 /*limit per page*/
+               );
+
+       return $pagination;
     }
 
     public function getNewestSuggestions()
@@ -140,10 +150,17 @@ class Category
 
         $suggestions = $this->suggestions->matching($criteria)->toArray();
 
+
         usort($suggestions, function($a, $b) {
             return count($b->getVotes()) - count($a->getVotes());
         });
 
-        return $suggestions;
+                $paginator  = $this->get('knp_paginator');
+                return $pagination = $paginator->paginate(
+                   $suggestions, /* query NOT result */
+                   $request->query->getInt('page', 1)/*page number*/,
+                   5 /*limit per page*/
+               );
+               
     }
 }

@@ -20,6 +20,13 @@
                           <li {% if order == 'popular' %}class="active"{% endif %}><a href="?order=popular">Najpopulárnejšie podnety</a></li>
                           <li {% if order == 'newest' %}class="active"{% endif %}><a href="?order=newest">Najnovšie podnety</a></li>
                         </ul>
+                        <div class="count">
+                            {{ suggestions.getTotalItemCount }}
+                        </div>
+                        {# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(suggestions) }}
+</div>
                         {% for sug in suggestions %}
                         <div class="row blog-post">
                           <div class="col-md-1 date-md">
@@ -41,7 +48,7 @@
                                       <a href="#" data-vote="{{sug.id}}"><big><span class="glyphicon glyphicon-thumbs-up"></span> <span class="votes-for-{{sug.id}}">{{sug.votes|length}}</span></big></a>
                                     </p>
                                     <p class="text-center">
-                                        <a href="#" data-vote="{{sug.id}}" class="btn btn-primary">Hlasuj</a> 
+                                        <a href="#" data-vote="{{sug.id}}" class="btn btn-primary">Hlasuj</a>
                                     </p>
                                 </div>
                               </div>
@@ -58,7 +65,7 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>    
+            </div>
       </div>
     </div>
 {% endblock %}
